@@ -1,0 +1,21 @@
+apt:
+  sources:
+  - deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
+  - deb http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
+  - deb http://archive.ubuntu.com/ubuntu/ jammy-backports main restricted universe
+    multiverse
+  packages:
+  - libselinux1:amd64=3.3-1build2
+  - fuse:amd64=2.9.9-5ubuntu3
+  - libtinfo6:amd64=6.3-2ubuntu0.1
+  - libfuse2:amd64=2.9.9-5ubuntu3
+  - sed:amd64=4.8-1ubuntu2
+  - dash:amd64=0.5.11+git20210903+057cd650a4ed-3build1
+  - libacl1:amd64=2.3.1-1
+  - libc6:amd64=2.35-0ubuntu3.10
+  - unionfs-fuse:amd64=1.0-1ubuntu2
+  - libpcre2-8-0:amd64=10.39-3ubuntu0.1
+  - libgcc-s1:amd64=12.3.0-1ubuntu1~22.04.2
+  - gcc-12-base:amd64=12.3.0-1ubuntu1~22.04.2
+  - libcrypt1:amd64=1:4.4.27-1
+  - bash:amd64=5.1-6ubuntu1.1

@@ -1,0 +1,10 @@
+[Desktop Entry]
+X-AppImage-Arch=x86_64
+X-AppImage-Name=game
+Name=game
+Exec=bin/bash
+Icon=game
+Type=Application
+Terminal=false
+Categories=Game;
+Comment=
