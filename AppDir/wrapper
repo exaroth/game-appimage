@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# CHANGE
+progEXE="Breach.exe"
 progName="game"
 
 progRealPath="$APPDIR/game"
-progEXE="Breach.exe"
 
 # export WINEDLLOVERRIDES="d3dimm,ddraw,glide,glide2x,glide3x=n"
 # export WINEDLLOVERRIDES="d3d9,d3d11,d3d8,d3d8,d3d10core,dxgi=n,b"
