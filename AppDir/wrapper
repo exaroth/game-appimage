@@ -1,9 +1,13 @@
 #!/bin/bash
 
-progEXE="Breach.exe"
+progEXE="StarCraft.exe"
 progName="game"
 
 progRealPath="$APPDIR/game"
+
+if [ -z ${RWMODE+x} ]; then
+    export RWMODE=0
+fi
 
 # export WINEDLLOVERRIDES="d3dimm,ddraw,glide,glide2x,glide3x=n"
 # export WINEDLLOVERRIDES="d3d9,d3d11,d3d8,d3d8,d3d10core,dxgi=n,b"
@@ -14,8 +18,14 @@ export WINELOADER=${WINELOADER:-"$APPDIR/winedata/./wine"}
 if [ -d "$APPDIR/wineprefix/drive_c" ]; then
   RO_WINEPREFIX="$APPDIR/wineprefix"
   MNT_WINEPREFIX=/tmp/."${progName}".unionfs
-  mkdir -p "$MNT_WINEPREFIX"
-  unionfs-fuse -o use_ino,uid=$UID -ocow "$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+  RW_WINEPREFIX="$HOME/.wine_prefixes/$progName"
+  if [ "$RWMODE" -eq 1 ]; then
+    mkdir -p "$MNT_WINEPREFIX" "$RW_WINEPREFIX"
+    unionfs-fuse -o use_ino,uid=$UID -ocow "$RW_WINEPREFIX"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+  else
+    mkdir -p "$MNT_WINEPREFIX"
+    unionfs-fuse -o use_ino,uid=$UID -ocow "$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+  fi
   export WINEPREFIX="$MNT_WINEPREFIX"
 else
   echo "No wine prefix supplied, exiting..."

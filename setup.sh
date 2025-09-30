@@ -3,7 +3,7 @@
 mkdir -p ./tmp
 
 if [ -f ./AppDir/winedata/wine ]; then
-    echo "appimagetool already exists, skipping download..."
+    echo "Wine appimage already exists, skipping download..."
 else
     curl -# -L -o ./AppDir/winedata/wine https://github.com/mmtrt/WINE_AppImage/releases/download/continuous-stable/wine-stable_10.0-x86_64.AppImage
     chmod +x ./AppDir/winedata/wine
