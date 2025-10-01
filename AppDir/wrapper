@@ -24,7 +24,9 @@ if [ ! -f "$PROG_REAL_PATH/$progEXE" ]; then
 fi
 
 
+# dgVoodoo overrides
 # export WINEDLLOVERRIDES="d3dimm,ddraw,glide,glide2x,glide3x=n"
+# xdvk overrides
 # export WINEDLLOVERRIDES="d3d9,d3d11,d3d8,d3d8,d3d10core,dxgi=n,b"
 # export WINEDEBUG=${WINEDEBUG:-"fixme-all"}
 # CHANGE
