@@ -1,12 +1,12 @@
 #!/bin/bash
 
-progEXE=""
-progName="game"
+EXECUTABLE=""
+PROGRAM_NAME="game"
 
 PROG_REAL_PATH="$APPDIR/game"
 RO_WINEPREFIX="$APPDIR/wineprefix"
-MNT_WINEPREFIX=/tmp/."${progName}".unionfs
-RW_WINEPREFIX="$HOME/.wine_prefixes/$progName"
+MNT_WINEPREFIX=/tmp/."${PROGRAM_NAME}".unionfs
+RW_WINEPREFIX="$HOME/.wine_prefixes/$PROGRAM_NAME"
 export WINELOADER=${WINELOADER:-"$APPDIR/winedata/./wine"}
 
 if [ -z ${RWMODE+x} ]; then
@@ -18,7 +18,7 @@ if [ ! -d "$RO_WINEPREFIX" ] || [ ! -d "$PROG_REAL_PATH" ]; then
 	exit 1
 fi
 
-if [ ! -f "$PROG_REAL_PATH/$progEXE" ]; then 
+if [ ! -f "$PROG_REAL_PATH/$EXECUTABLE" ]; then 
 	echo "Invalid game executable"
 	exit 1
 fi
@@ -29,7 +29,6 @@ fi
 # xdvk overrides
 # export WINEDLLOVERRIDES="d3d9,d3d11,d3d8,d3d8,d3d10core,dxgi=n,b"
 # export WINEDEBUG=${WINEDEBUG:-"fixme-all"}
-# CHANGE
 
 if [ -d "$APPDIR/wineprefix/drive_c" ]; then
   if [ "$RWMODE" -eq 1 ]; then
@@ -49,7 +48,7 @@ cleanup ()
 {
   echo "Exiting ..."
   kill $(ps -ef | grep "wineserver" | awk '{print $2}' | head -1)
-  kill $(ps -ef | grep $progName.unionfs | awk '{print $2}' | head -1)
+  kill $(ps -ef | grep $PROGRAM_NAME.unionfs | awk '{print $2}' | head -1)
   sleep 1
   fusermount -u "$MNT_WINEPREFIX" > /dev/null
   pkill -9 -f "system32"
@@ -58,12 +57,12 @@ cleanup ()
   exit 0
 }
 
-WINEPREFIX="$MNT_WINEPREFIX" "$WINELOADER" start /d "$PROG_REAL_PATH" "$progEXE"
+WINEPREFIX="$MNT_WINEPREFIX" "$WINELOADER" start /d "$PROG_REAL_PATH" "$EXECUTABLE"
 
 while true :
 do
     sleep 1
-    proc=$(pgrep -f $progEXE | head -1)
+    proc=$(pgrep -f $EXECUTABLE | head -1)
     if [ -z "$proc" ]; then
         cleanup
     fi

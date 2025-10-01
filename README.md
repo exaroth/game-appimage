@@ -20,7 +20,7 @@ WINEPREFIX=$PWD/wineprefix ./AppDir/winedata/wine /path/to/installer.exe
 
 5. Move contents of game folder to `game` directory
 
-6. Update `AppDir/wrapper` file, set `progEXE` to the name of game executable as well as `progName` to unique game identifier
+6. Update `AppDir/wrapper` file, set `EXECUTABLE` to the name of game executable as well as `PROGRAM_NAME` to unique game identifier
 
 7. Run `build.sh` to build AppImage, look for generated file in `build` dir
 
