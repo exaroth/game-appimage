@@ -5,5 +5,6 @@ echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     rm -Rf ./game ./wineprefix
+    rm -Rf ./AppDir/game ./AppDir/wineprefix
     git reset --hard origin/main
 fi
