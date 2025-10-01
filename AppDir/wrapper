@@ -1,6 +1,6 @@
 #!/bin/bash
 
-progEXE="StarCraft.exe"
+progEXE=""
 progName="game"
 
 PROG_REAL_PATH="$APPDIR/game"
