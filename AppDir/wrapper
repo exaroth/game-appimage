@@ -3,22 +3,33 @@
 progEXE="StarCraft.exe"
 progName="game"
 
-progRealPath="$APPDIR/game"
+PROG_REAL_PATH="$APPDIR/game"
+RO_WINEPREFIX="$APPDIR/wineprefix"
+MNT_WINEPREFIX=/tmp/."${progName}".unionfs
+RW_WINEPREFIX="$HOME/.wine_prefixes/$progName"
+export WINELOADER=${WINELOADER:-"$APPDIR/winedata/./wine"}
 
 if [ -z ${RWMODE+x} ]; then
     export RWMODE=0
 fi
 
+if [ ! -d "$RO_WINEPREFIX" ] || [ ! -d "$PROG_REAL_PATH" ]; then
+	echo "Missing wineprefix or game directory"
+	exit 1
+fi
+
+if [ ! -f "$PROG_REAL_PATH/$progEXE" ]; then 
+	echo "Invalid game executable"
+	exit 1
+fi
+
+
 # export WINEDLLOVERRIDES="d3dimm,ddraw,glide,glide2x,glide3x=n"
 # export WINEDLLOVERRIDES="d3d9,d3d11,d3d8,d3d8,d3d10core,dxgi=n,b"
 # export WINEDEBUG=${WINEDEBUG:-"fixme-all"}
 # CHANGE
-export WINELOADER=${WINELOADER:-"$APPDIR/winedata/./wine"}
 
 if [ -d "$APPDIR/wineprefix/drive_c" ]; then
-  RO_WINEPREFIX="$APPDIR/wineprefix"
-  MNT_WINEPREFIX=/tmp/."${progName}".unionfs
-  RW_WINEPREFIX="$HOME/.wine_prefixes/$progName"
   if [ "$RWMODE" -eq 1 ]; then
     mkdir -p "$MNT_WINEPREFIX" "$RW_WINEPREFIX"
     unionfs-fuse -o use_ino,uid=$UID -ocow "$RW_WINEPREFIX"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
@@ -32,7 +43,7 @@ else
   exit 1
 fi
 
-atexit ()
+cleanup ()
 {
   echo "Exiting ..."
   kill $(ps -ef | grep "wineserver" | awk '{print $2}' | head -1)
@@ -45,13 +56,13 @@ atexit ()
   exit 0
 }
 
-WINEPREFIX="$MNT_WINEPREFIX" "$WINELOADER" start /d "$progRealPath" "$progEXE"
+WINEPREFIX="$MNT_WINEPREFIX" "$WINELOADER" start /d "$PROG_REAL_PATH" "$progEXE"
 
 while true :
 do
     sleep 1
     proc=$(pgrep -f $progEXE | head -1)
     if [ -z "$proc" ]; then
-        atexit
+        cleanup
     fi
 done
