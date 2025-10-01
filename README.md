@@ -6,16 +6,16 @@
 
 2. Initialize wineprefix 
 ```
-WINEPREFIX=$PWD/wineprefix ./winedata/wine wineboot
+./wine wineboot
 ```
 
 3. If game needs xvdk/vulkan drivers, .NET Runtime etc. install dependencies via winetricks by executing:
 ```
-WINEPREFIX=$PWD/wineprefix ./winedata/wine winetricks
+./wine winetricks
 ```
 4. If game has an installer run it via:
 ```
-WINEPREFIX=$PWD/wineprefix ./winedata/wine /path/to/installer.exe
+./wine /path/to/installer.exe
 ```
 
 5. Move contents of game folder to `game` directory
