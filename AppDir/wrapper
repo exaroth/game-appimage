@@ -51,7 +51,7 @@ cleanup ()
   kill $(ps -ef | grep "wineserver" | awk '{print $2}' | head -1)
   kill $(ps -ef | grep $progName.unionfs | awk '{print $2}' | head -1)
   sleep 1
-  fusermount -u "$MNT_WINEPREFIX"
+  fusermount -u "$MNT_WINEPREFIX" > /dev/null
   pkill -9 -f "system32"
   rm -r "$MNT_WINEPREFIX"
   echo "Done..."
