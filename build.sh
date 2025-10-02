@@ -35,6 +35,7 @@ fi
 if [ "$1" = "--provision-mode" ]; then
     echo "Building with PROVISION_MODE=ON"
     cat ./AppDir/AppRun.env | sed -e '/^PROVISION_MODE/s/[0|1]/1/g' > ./tmp/AppRun.env.tmp
+    rm -Rf ./AppDir/wineprefix
 else
     cat ./AppDir/AppRun.env | sed -e '/^PROVISION_MODE/s/[0|1]/0/g' > ./tmp/AppRun.env.tmp
 fi
