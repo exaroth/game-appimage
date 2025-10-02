@@ -1,7 +1,7 @@
 #!/bin/bash
 
 read -p "This will reset all the changes you made, are you sure? " -n 1 -r
-echo    # (optional) move to a new line
+echo 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     rm -Rf ./game ./wineprefix

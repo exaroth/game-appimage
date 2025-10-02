@@ -11,7 +11,7 @@ while read -r p; do
   src="$(echo "$p" | cut -d ':' -f1)"
   echo "Processing path override for: $src"
   if [ ! -e "$src" ]; then
-      echo "doesnt exist!"
+      echo "Target at $src doesnt exist, skipping."
       continue
   fi
 
