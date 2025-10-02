@@ -1,7 +1,7 @@
 #!/bin/bash
 
-EXECUTABLE=""
-PROGRAM_NAME="game"
+EXECUTABLE="depro.exe"
+PROGRAM_NAME="text_game"
 
 PROG_REAL_PATH="$APPDIR/game"
 RO_WINEPREFIX="$APPDIR/wineprefix"
@@ -93,7 +93,7 @@ cleanup ()
   exit 0
 }
 
-WINEPREFIX="$MNT_WINEPREFIX" "$WINELOADER" start /d "$PROG_REAL_PATH" "$EXECUTABLE"
+WINEPREFIX="$WINEPREFIX" "$WINELOADER" start /d "$PROG_REAL_PATH" "$EXECUTABLE"
 
 while true :
 do
