@@ -6,15 +6,18 @@ mkdir -p tmp build AppDir/overrides
 cp -Rf ./game ./wineprefix/ AppDir
 
 while read -r p; do
+  program_name="$(sed -n 's/^PROGRAM_NAME=\(.*\)/\1/p' < AppDir/wrapper)"
+  program_name=$(echo $program_name | tr -d '"')
   src="$(echo "$p" | cut -d ':' -f1)"
+  echo "Processing path override for: $src"
   if [ ! -e "$src" ]; then
       echo "doesnt exist!"
       continue
   fi
 
   mkdir -p "AppDir/overrides/$(dirname $src)"
-  mv "$src" "AppDir/overrides/$(dirname $src)"
-  ln -s "/tmp/.game_overrides/$src" "$src"
+  mv "AppDir/$src" "AppDir/overrides/$(dirname $src)"
+  ln -s "/tmp/.${program_name}_overrides/$src" "AppDir/$src"
 done < AppDir/override_list
 
 # todo update
