@@ -1,7 +1,7 @@
 #!/bin/bash
 
-EXECUTABLE=""
-PROGRAM_NAME="game"
+EXECUTABLE="launcher.exe"
+PROGRAM_NAME="dungeon_keeper"
 
 PROG_REAL_PATH="$APPDIR/game"
 RO_WINEPREFIX="$APPDIR/wineprefix"
@@ -29,6 +29,31 @@ fi
 # xdvk overrides
 # export WINEDLLOVERRIDES="d3d9,d3d11,d3d8,d3d8,d3d10core,dxgi=n,b"
 # export WINEDEBUG=${WINEDEBUG:-"fixme-all"}
+
+while read -r line; do
+  echo "line: "$line
+  src="$(echo "$line" | cut  -f1 -d ':')"
+  dest="$(echo "$line" | cut -f2 -d ':')"
+  home=$(eval echo "~$(whoami)")
+  dest="${dest//\$HOME/$home}"
+  if [ -z "$line" ] || [ -z "$src" ] || [ -z "$dest" ]; then
+	  continue
+  fi
+  if [ ! -e "$APPDIR/overrides/$src" ]; then
+    echo "Error: $src not found in override dir"
+    continue
+  else
+    if [ ! -e "$dest" ]; then
+        echo "Creating user data at path: $dest"
+        mkdir -p $(dirname $dest)
+        cp -Rf "$APPDIR/overrides/$src" "$dest"
+    fi
+    mkdir -p "/tmp/.game_overrides/$(dirname $src)"
+    ln -s "$dest" "/tmp/.game_overrides/$src"
+  fi
+done < "$APPDIR"/override_list
+
+
 
 if [ -d "$APPDIR/wineprefix/drive_c" ]; then
   if [ "$RWMODE" -eq 1 ]; then
