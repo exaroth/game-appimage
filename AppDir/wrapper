@@ -61,14 +61,19 @@ done < "$APPDIR"/override_list
 
 
 if [ -d "$APPDIR/wineprefix/drive_c" ]; then
-  if [ "$RWMODE" -eq 1 ]; then
+  if [ "$PROVISION_MODE" -eq 1 ]; then
+    WINE_CMD="WINEPREFIX=$RW_WINEPREFIX $APPDIR/windedata/wine"
+    WINE=$WINE_CMD source "$APPDIR/provision_wineprefix.sh"
+    export WINEPREFIX="$RW_WINEPREFIX"
+  elif [ "$RWMODE" -eq 1 ]; then
     mkdir -p "$MNT_WINEPREFIX" "$RW_WINEPREFIX"
     unionfs-fuse -o use_ino,uid=$UID -ocow "$RW_WINEPREFIX"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+    export WINEPREFIX="$MNT_WINEPREFIX"
   else
     mkdir -p "$MNT_WINEPREFIX"
     unionfs-fuse -o use_ino,uid=$UID -ocow "$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+    export WINEPREFIX="$MNT_WINEPREFIX"
   fi
-  export WINEPREFIX="$MNT_WINEPREFIX"
 else
   echo "No wine prefix supplied, exiting..."
   exit 1
