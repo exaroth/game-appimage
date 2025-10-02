@@ -31,6 +31,11 @@ fi
 # export WINEDLLOVERRIDES="d3d9,d3d11,d3d8,d3d8,d3d10core,dxgi=n,b"
 # export WINEDEBUG=${WINEDEBUG:-"fixme-all"}
 
+# Cleanup override dir in case game wasnt closed properly
+if [ -d "$OVERRIDE_DIR" ]; then
+    rm -Rf "$OVERRIDE_DIR"
+fi
+
 while read -r line; do
   src="$(echo "$line" | cut  -f1 -d ':')"
   dest="$(echo "$line" | cut -f2 -d ':')"
