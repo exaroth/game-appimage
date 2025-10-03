@@ -32,14 +32,15 @@ Game AppImage Builder is a simple tool that makes it easy to create portable and
 > [!NOTE]
 > There are multiple build modes available:
 > - __Default__ - This will use provided wineprefix in read only mode, you might need to create custom path mappings (see below) for locations in the filesystem that game writes to.
-> - __Writeable wineprefix mode__ - This mode is similar to above but will mount a writeable, persisten copy of the supplied wineprefix in the filesystem. To enable it add `--rw-mode` when executing `build.sh` script.
-> - __Provisioned wineprefix mode__ - When using this mode wineprefix will not be attached to the AppImage, instead it will be generated automatically during first game boot. You can configure the provisioning process by editing ./AppDir/provision_wineprefix.sh script, eg. to install dxvk and visual C++ Redist in the wineprefix append 
+> - __Writeable wineprefix mode__ - This mode is similar to above but will mount a writeable, persistent copy of the supplied wineprefix in the host filesystem. To enable it add `--rw-mode` when executing `build.sh` script.
+> - __Provisioned wineprefix mode__ - When using this mode wineprefix will not be attached to the AppImage, instead it will be generated automatically during first game boot. You can configure the provisioning process by editing `./AppDir/provision_wineprefix.sh` script, eg. to install dxvk and Visual C++ Redist in the wineprefix append 
 > ```
 > $WINE winetricks dxvk2071 
 > $WINE winetricks vcrun2019
 > ```
-> In order to use this mode add `--provision-mode` to build script. Using provisioned mode reduces size of the game AppImage size by at least 100MB.
+> In order to use this mode add `--provision-mode` when running build script. Using provisioned mode reduces size of the game AppImage size by at least 100MB.
  
+Persistent wineprefix directories are stored in `$HOME/.wine_prefixes`
 ### Custom path mappings
 
 This feature is useful if you want for some game files to be stored outside of the appimage, for example save directory, configuration etc.
