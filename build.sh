@@ -12,7 +12,7 @@ fi
 
 while read -r p; do
   program_name="$(sed -n 's/^PROGRAM_NAME=\(.*\)/\1/p' < AppDir/wrapper)"
-  program_name=$(echo $program_name | tr -d '"')
+  program_name=$(echo "$program_name" | tr -d '"')
   src="$(echo "$p" | cut -d ':' -f1)"
   echo "Processing path override for: $src"
   if [ ! -e "$src" ]; then
@@ -20,8 +20,8 @@ while read -r p; do
       continue
   fi
 
-  mkdir -p "AppDir/overrides/$(dirname $src)"
-  mv "AppDir/$src" "AppDir/overrides/$(dirname $src)"
+  mkdir -p "AppDir/overrides/$(dirname "$src")"
+  mv "AppDir/$src" "AppDir/overrides/$(dirname "$src")"
   ln -s "/tmp/.${program_name}_overrides/$src" "AppDir/$src"
 done < AppDir/override_list
 

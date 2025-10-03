@@ -54,10 +54,10 @@ while read -r line; do
   else
     if [ ! -e "$dest" ]; then
         echo "Creating user data at path: $dest"
-        mkdir -p $(dirname $dest)
+        mkdir -p "$(dirname "$dest")"
         cp -Rf "$APPDIR/overrides/$src" "$dest"
     fi
-    mkdir -p "$OVERRIDE_DIR/$(dirname $src)"
+    mkdir -p "$OVERRIDE_DIR/$(dirname "$src")"
     ln -s "$dest" "$OVERRIDE_DIR/$src"
   fi
 done < "$APPDIR"/override_list
