@@ -14,8 +14,8 @@ if [ -z ${RWMODE+x} ]; then
     export RWMODE=0
 fi
 
-if [ ! -d "$RO_WINEPREFIX" ] || [ ! -d "$PROG_REAL_PATH" ]; then
-	echo "Missing wineprefix or game directory"
+if [ ! -d "$PROG_REAL_PATH" ]; then
+	echo "Missing game directory"
 	exit 1
 fi
 
@@ -60,18 +60,31 @@ done < "$APPDIR"/override_list
 
 
 
-if [ -d "$APPDIR/wineprefix/drive_c" ]; then
-  if [ "$RWMODE" -eq 1 ]; then
-    mkdir -p "$MNT_WINEPREFIX" "$RW_WINEPREFIX"
-    unionfs-fuse -o use_ino,uid=$UID -ocow "$RW_WINEPREFIX"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
-  else
-    mkdir -p "$MNT_WINEPREFIX"
-    unionfs-fuse -o use_ino,uid=$UID -ocow "$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
-  fi
-  export WINEPREFIX="$MNT_WINEPREFIX"
+if [ "$PROVISION_MODE" -eq 1 ]; then
+    export WINEPREFIX="$RW_WINEPREFIX"
+    if [ ! -d "$RW_WINEPREFIX" ]; then
+        mkdir -p "$RW_WINEPREFIX"
+        # we need to copy wine instance temporarily to host filesystem for provisioning
+        # as winetricks requires read/write access for downloading patches
+        wine_temp_p="/tmp/${PROGRAM_NAME}_wine_temp"
+        mkdir -p $wine_temp_p
+        cp -Rf "$APPDIR/winedata/wine" "$wine_temp_p"
+        WINE="$wine_temp_p/wine" source "$APPDIR/provision_wineprefix.sh"
+        rm -Rf "$wine_temp_p"
+    fi
 else
-  echo "No wine prefix supplied, exiting..."
-  exit 1
+    if [ ! -d "$APPDIR/wineprefix/drive_c" ]; then
+        echo "No wine prefix supplied, exiting..."
+        exit 1
+    fi
+    if [ "$RWMODE" -eq 1 ]; then
+        mkdir -p "$MNT_WINEPREFIX" "$RW_WINEPREFIX"
+        unionfs-fuse -o use_ino,uid=$UID -ocow "$RW_WINEPREFIX"=RW:"$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+    else
+        mkdir -p "$MNT_WINEPREFIX"
+        unionfs-fuse -o use_ino,uid=$UID -ocow "$RO_WINEPREFIX"=RO "$MNT_WINEPREFIX" || exit 1
+    fi
+    export WINEPREFIX="$MNT_WINEPREFIX"
 fi
 
 cleanup ()
@@ -88,7 +101,7 @@ cleanup ()
   exit 0
 }
 
-WINEPREFIX="$MNT_WINEPREFIX" "$WINELOADER" start /d "$PROG_REAL_PATH" "$EXECUTABLE"
+WINEPREFIX="$WINEPREFIX" "$WINELOADER" start /d "$PROG_REAL_PATH" "$EXECUTABLE"
 
 while true :
 do

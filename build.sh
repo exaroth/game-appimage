@@ -5,6 +5,11 @@ mkdir -p tmp build AppDir/overrides
 
 cp -Rf ./game ./wineprefix/ AppDir
 
+if [ ! -f ./tmp/appimagetool.AppImage ]; then
+    echo "AppImageTool is not installed, run setup.sh first"
+    exit 1
+fi
+
 while read -r p; do
   program_name="$(sed -n 's/^PROGRAM_NAME=\(.*\)/\1/p' < AppDir/wrapper)"
   program_name=$(echo $program_name | tr -d '"')
@@ -26,6 +31,13 @@ if [ "$1" = "--rw-mode" ]; then
     cat ./AppDir/AppRun.env | sed -e '/^RWMODE/s/[0|1]/1/g' > ./tmp/AppRun.env.tmp
 else
     cat ./AppDir/AppRun.env | sed -e '/^RWMODE/s/[0|1]/0/g' > ./tmp/AppRun.env.tmp
+fi
+if [ "$1" = "--provision-mode" ]; then
+    echo "Building with PROVISION_MODE=ON"
+    cat ./AppDir/AppRun.env | sed -e '/^PROVISION_MODE/s/[0|1]/1/g' > ./tmp/AppRun.env.tmp
+    rm -Rf ./AppDir/wineprefix
+else
+    cat ./AppDir/AppRun.env | sed -e '/^PROVISION_MODE/s/[0|1]/0/g' > ./tmp/AppRun.env.tmp
 fi
 cp ./tmp/AppRun.env.tmp ./AppDir/AppRun.env
 ./tmp/appimagetool.AppImage AppDir build/game.AppImage
