@@ -18,7 +18,7 @@ Game AppImage Builder is a simple tool that makes it easy to create portable and
 ```
 ./run_wine.sh /path/to/installer.exe
 ```
-4. If game needs xvdk/vulkan drivers, .NET Runtime etc. install dependencies via winetricks by executing:
+4. If game needs dxvk/vulkan drivers, .NET Runtime etc. install dependencies via winetricks by executing:
 ```
 ./run_wine.sh winetricks
 ```
@@ -30,10 +30,15 @@ Game AppImage Builder is a simple tool that makes it easy to create portable and
 7. Run `build.sh` to build AppImage, look for generated file in `build` dir
 
 > [!NOTE]
-> Some games require writeable wineprefix, if that is the case for your game run build script with
-> `--rw-mode` parameter, this will create persistent wineprefix in `$HOME/.wine_prefixes` for the game
-> on the first run.
->
+> There are multiple build modes available:
+> - __Default__ - This will use provided wineprefix in read only mode, you might need to create custom path mappings (see below) for locations in the filesystem that game writes to.
+> - __Writeable wineprefix mode__ - This mode is similar to above but will mount a writeable, persisten copy of the supplied wineprefix in the filesystem. To enable it add `--rw-mode` when executing `build.sh` script.
+> - __Provisioned wineprefix mode__ - When using this mode wineprefix will not be attached to the AppImage, instead it will be generated automatically during first game boot. You can configure the provisioning process by editing ./AppDir/provision_wineprefix.sh script, eg. to install dxvk and visual C++ Redist in the wineprefix append 
+> ```
+> $WINE winetricks dxvk2071 
+> $WINE winetricks vcrun2019
+> ```
+> In order to use this mode add `--provision-mode` to build script. Using provisioned mode reduces size of the game AppImage size by at least 100MB.
  
 ### Custom path mappings
 
