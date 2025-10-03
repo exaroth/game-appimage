@@ -54,3 +54,6 @@ game/config.txt:$HOME/Documents/my_game/config.txt
 ```
 
 This works for both files and directories, note however that these have to exist when you build the appimage.
+
+### License
+See `LICENSE` file for details
