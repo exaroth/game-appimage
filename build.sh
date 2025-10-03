@@ -25,13 +25,15 @@ while read -r p; do
   ln -s "/tmp/.${program_name}_overrides/$src" "AppDir/$src"
 done < AppDir/override_list
 
-# todo update
 if [ "$1" = "--rw-mode" ]; then
     echo "Building with RWMODE=ON"
     cat ./AppDir/AppRun.env | sed -e '/^RWMODE/s/[0|1]/1/g' > ./tmp/AppRun.env.tmp
 else
     cat ./AppDir/AppRun.env | sed -e '/^RWMODE/s/[0|1]/0/g' > ./tmp/AppRun.env.tmp
 fi
+
+cp ./tmp/AppRun.env.tmp ./AppDir/AppRun.env
+
 if [ "$1" = "--provision-mode" ]; then
     echo "Building with PROVISION_MODE=ON"
     cat ./AppDir/AppRun.env | sed -e '/^PROVISION_MODE/s/[0|1]/1/g' > ./tmp/AppRun.env.tmp
