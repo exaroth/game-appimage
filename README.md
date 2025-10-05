@@ -55,5 +55,27 @@ game/config.txt:$HOME/Documents/my_game/config.txt
 
 This works for both files and directories, note however that these have to exist when you build the appimage.
 
+### Troubleshooting
+
+If AppImage fails to run the program try following steps:
+
+- Ensure that game works outside the AppImage, run
+```
+./run_wine.sh start /d "$PWD/game" "<game_executable>.exe"
+```
+If the program fails to start, ensure that all required libraries (eg. `dxvk`, `C++ Redistritable`) are installed
+
+- If you're building AppImage using default build type try running it with either `--rw-mode` or `--provision-mode`
+ 
+- Check game directory for obvious folders which might require write access (eg. save or configuration dirs). Use custom path mappings to expose those within local filesystem (see [Custom Path Mappings](#custom-path-mappings) section) as AppImages are read only
+ 
+- If the game still fails to run properly execute:
+
+```
+lsof -a +D $PWD/game -r 1  | awk 'NR==1 || $4~/[0-9]+[uw]/'
+```
+then in another terminal run game using command from step 1 to find out if there are any other files which require write access.
+
+
 ### License
 See `LICENSE` file for details
