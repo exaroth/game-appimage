@@ -2,7 +2,7 @@
 
 Game AppImage Builder is a simple tool that makes it easy to create portable and self contained windows game appimages running on Wine.
 
-- Small size overhead thanks to use of compact wine appimage by [mmtrt](https://github.com/mmtrt/WINE_AppImage) (~200MB)
+- Small size overhead thanks to use of compact wine appimage by [mmtrt](https://github.com/mmtrt/WINE_AppImage) (~100MB)
 - Ability to define custom path mappings for the game
 - Support for both idempotent and writeable winprefixes
 
