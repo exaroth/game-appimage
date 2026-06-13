@@ -8,9 +8,9 @@ Game AppImage Builder is a simple tool that makes it easy to create portable and
 
 ### Usage
 
-1. Run `setup.py` 
+1. Run `setup.sh` to download wine executable.
 
-2. Initialize wineprefix 
+2. Initialize wineprefix
 ```
 ./run_wine.sh wineboot
 ```
@@ -33,13 +33,13 @@ Game AppImage Builder is a simple tool that makes it easy to create portable and
 > There are multiple build modes available:
 > - __Default__ - This will use provided wineprefix in read only mode, you might need to create custom path mappings (see below) for locations in the filesystem that game writes to.
 > - __Writeable wineprefix mode__ - This mode is similar to above but will mount a writeable, persistent copy of the supplied wineprefix in the host filesystem. To enable it add `--rw-mode` when executing `build.sh` script.
-> - __Provisioned wineprefix mode__ - When using this mode wineprefix will not be attached to the AppImage, instead it will be generated automatically during first game boot. You can configure the provisioning process by editing `./AppDir/provision_wineprefix.sh` script, eg. to install dxvk and Visual C++ Redist in the wineprefix append 
+> - __Provisioned wineprefix mode__ - When using this mode wineprefix will not be attached to the AppImage, instead it will be generated automatically during first game boot. You can configure the provisioning process by editing `./AppDir/provision_wineprefix.sh` script, eg. to install dxvk and Visual C++ Redist in the wineprefix append
 > ```
-> $WINE winetricks dxvk2071 
+> $WINE winetricks dxvk2071
 > $WINE winetricks vcrun2019
 > ```
 > In order to use this mode add `--provision-mode` when running build script. Using provisioned mode reduces size of the game AppImage size by at least 100MB.
- 
+
 Persistent wineprefix directories are stored in `$HOME/.wine_prefixes`
 ### Custom path mappings
 
@@ -66,9 +66,9 @@ If AppImage fails to run the program try following steps:
 If the program fails to start, ensure that all required libraries (eg. `dxvk`, `C++ Redistritable`) are installed
 
 - If you're building AppImage using default build type try running it with either `--rw-mode` or `--provision-mode`
- 
+
 - Check game directory for obvious folders which might require write access (eg. save or configuration dirs). Use custom path mappings to expose those within local filesystem (see [Custom Path Mappings](#custom-path-mappings) section) as AppImages are read only
- 
+
 - If the game still fails to run properly execute:
 
 ```
