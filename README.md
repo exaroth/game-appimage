@@ -23,7 +23,7 @@ Game AppImage Builder is a simple tool that makes it easy to create portable and
 ./run_wine.sh winetricks
 ```
 
-5. Move contents of game folder to `game` directory
+5. Move contents of game folder to `game` directory, if you used game installer contents will be inside `./wineprefix/drive_c/...` directory.
 
 6. Update `AppDir/wrapper` file, set `EXECUTABLE` to the name of game executable as well as `PROGRAM_NAME` to unique game identifier
 
